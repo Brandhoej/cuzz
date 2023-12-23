@@ -75,7 +75,7 @@ func Test_EqualityGenericFunction(t *testing.T) {
 	}
 
 	functions := FunctionSet{
-		functions: []Function{
+		set: []Function{
 			trueFn,
 			int32Fn,
 			equalityFn,

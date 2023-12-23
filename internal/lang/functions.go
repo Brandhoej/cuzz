@@ -16,13 +16,13 @@ func (function *Function) IsEmpty() bool {
 }
 
 type FunctionSet struct {
-	functions []Function
+	set []Function
 }
 
 func (set *FunctionSet) Computes(t Type, types TypeTree) (subset FunctionSet) {
-	for _, function := range set.functions {
+	for _, function := range set.set {
 		if types.IsAssignable(function.returnType, t.identifier) {
-			subset.functions = append(subset.functions, function)
+			subset.set = append(subset.set, function)
 		}
 	}
 

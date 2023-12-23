@@ -79,7 +79,7 @@ func (generator *RndExpressionGenerator) ChooseGenericConcretions(
 
 func (generator *RndExpressionGenerator) ChooseFunctionThatComputes(t Type) Function {
 	subset := generator.functions.Computes(t, generator.typeTree)
-	functions := subset.functions
+	functions := subset.set
 	index := rand.Intn(len(functions))
 	return functions[index]
 }
