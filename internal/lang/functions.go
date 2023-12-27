@@ -8,7 +8,6 @@ type Function struct {
 }
 
 func (function *Function) Asd() {
-
 }
 
 func (function *Function) IsEmpty() bool {

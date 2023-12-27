@@ -4,7 +4,7 @@ import (
 	"context"
 	"errors"
 
-	"github.com/brandhoej/pgen/internal/pipeline"
+	"github.com/brandhoej/cuzz/internal/pipeline"
 )
 
 var (

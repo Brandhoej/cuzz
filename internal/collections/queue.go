@@ -1,4 +1,4 @@
-package ebnf
+package collections
 
 type Queue[T any] interface {
 	Size() int

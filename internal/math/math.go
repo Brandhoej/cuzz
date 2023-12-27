@@ -1,4 +1,4 @@
-package arbitrary
+package math
 
 import (
 	"math"
@@ -6,7 +6,7 @@ import (
 	"golang.org/x/exp/constraints"
 )
 
-func safeUnsignedDifference[S constraints.Signed, U constraints.Unsigned](lhs, rhs S) U {
+func SafeUnsignedDifference[S constraints.Signed, U constraints.Unsigned](lhs, rhs S) U {
 	var min, max S = lhs, rhs
 	if min > max {
 		min, max = max, min
@@ -24,7 +24,7 @@ func safeUnsignedDifference[S constraints.Signed, U constraints.Unsigned](lhs, r
 	return U(-min) + U(max)
 }
 
-func safeUnsignedAddition[S constraints.Signed, U constraints.Unsigned](lhs S, rhs U) (val S) {
+func SafeUnsignedAddition[S constraints.Signed, U constraints.Unsigned](lhs S, rhs U) (val S) {
 	max := U(MaxOf[S]())
 
 	val = lhs
@@ -43,7 +43,7 @@ func safeUnsignedAddition[S constraints.Signed, U constraints.Unsigned](lhs S, r
 	return
 }
 
-func lerp[T constraints.Float](from, to, t T) T {
+func Lerp[T constraints.Float](from, to, t T) T {
 	return from*(1.0-t) + (to * t)
 }
 

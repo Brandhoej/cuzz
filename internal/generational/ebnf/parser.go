@@ -1,6 +1,10 @@
 package ebnf
 
-import "errors"
+import (
+	"errors"
+
+	"github.com/brandhoej/cuzz/internal/collections"
+)
 
 /* Grammar → (Production `Dot`)* EOF
  * Production  → `Identifier` `=` Rules
@@ -21,8 +25,7 @@ var (
 	ErrMissingEqualitySignInProduction = errors.New("production is missing an equality sign following its identifier")
 )
 
-type Expression interface {
-}
+type Expression interface{}
 
 type GrammarAST struct {
 	Productions []ProductionAST
@@ -51,13 +54,13 @@ type RuleAST struct {
 
 type Parser struct {
 	lexer      Lexer
-	lookaheads Queue[lookahead[Token]]
+	lookaheads collections.Queue[lookahead[Token]]
 }
 
 func NewParser(lexer Lexer) Parser {
 	return Parser{
 		lexer:      lexer,
-		lookaheads: NewArrayQueue[lookahead[Token]](),
+		lookaheads: collections.NewArrayQueue[lookahead[Token]](),
 	}
 }
 

@@ -5,6 +5,8 @@ import (
 	"io"
 	"strings"
 	"unicode"
+
+	"github.com/brandhoej/cuzz/internal/collections"
 )
 
 var ErrInvalidToken = errors.New("invalid token")
@@ -46,14 +48,14 @@ func token(class int, lexeme string) Token {
 type Lexer struct {
 	reader     io.RuneReader
 	lexeme     []rune
-	lookaheads Queue[lookahead[rune]]
+	lookaheads collections.Queue[lookahead[rune]]
 }
 
 func LexString(input string) Lexer {
 	return Lexer{
 		reader:     strings.NewReader(input),
 		lexeme:     make([]rune, 0),
-		lookaheads: NewArrayQueue[lookahead[rune]](),
+		lookaheads: collections.NewArrayQueue[lookahead[rune]](),
 	}
 }
 
@@ -155,7 +157,6 @@ func (lexer *Lexer) string(character rune) bool {
 	// Read until next '"' rune.
 	for {
 		character, err := lexer.advance()
-
 		// We most likely encountered EOF before a '"'.
 		if err != nil {
 			return false

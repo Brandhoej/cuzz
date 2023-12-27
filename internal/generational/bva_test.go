@@ -50,7 +50,7 @@ func TestBVA(t *testing.T) {
 		bva := BoundaryStrategyNumeric[int](
 			test.first, test.last, 1,
 			test.first, test.last,
-			BVA,
+			BVA[int],
 		)
 
 		if len(bva) != len(test.bva) {
@@ -132,7 +132,7 @@ func TestRA(t *testing.T) {
 		ra := BoundaryStrategyNumeric[int](
 			test.first, test.last, 1,
 			test.min, test.max,
-			RA,
+			RA[int],
 		)
 
 		if len(ra) != len(test.ra) {
@@ -171,11 +171,16 @@ func TestWCA(t *testing.T) {
 			first2: 2,
 			last2:  3,
 			wca: [][]int{
-				{1, 2}, {1, 3},
-				{2, 2}, {2, 3},
-				{3, 2}, {3, 3},
-				{4, 2}, {4, 3},
-				{5, 2}, {5, 3},
+				{1, 2},
+				{1, 3},
+				{2, 2},
+				{2, 3},
+				{3, 2},
+				{3, 3},
+				{4, 2},
+				{4, 3},
+				{5, 2},
+				{5, 3},
 			},
 		},
 		{
@@ -198,14 +203,14 @@ func TestWCA(t *testing.T) {
 			return BoundaryStrategyNumeric[int](
 				test.first1, test.last1, 1,
 				test.first1, test.last1,
-				BVA,
+				BVA[int],
 			)
 		}
 		bva2 := func() []int {
 			return BoundaryStrategyNumeric[int](
 				test.first2, test.last2, 1,
 				test.first2, test.last2,
-				BVA,
+				BVA[int],
 			)
 		}
 		wca := MBA[int]([]func() []int{bva1, bva2})
@@ -252,13 +257,34 @@ func TestRWCA(t *testing.T) {
 			first2: 2,
 			last2:  3,
 			wca: [][]int{
-				{0, 1}, {0, 2}, {0, 3}, {0, 4},
-				{1, 1}, {1, 2}, {1, 3}, {1, 4},
-				{2, 1}, {2, 2}, {2, 3}, {2, 4},
-				{3, 1}, {3, 2}, {3, 3}, {3, 4},
-				{4, 1}, {4, 2}, {4, 3}, {4, 4},
-				{5, 1}, {5, 2}, {5, 3}, {5, 4},
-				{6, 1}, {6, 2}, {6, 3}, {6, 4},
+				{0, 1},
+				{0, 2},
+				{0, 3},
+				{0, 4},
+				{1, 1},
+				{1, 2},
+				{1, 3},
+				{1, 4},
+				{2, 1},
+				{2, 2},
+				{2, 3},
+				{2, 4},
+				{3, 1},
+				{3, 2},
+				{3, 3},
+				{3, 4},
+				{4, 1},
+				{4, 2},
+				{4, 3},
+				{4, 4},
+				{5, 1},
+				{5, 2},
+				{5, 3},
+				{5, 4},
+				{6, 1},
+				{6, 2},
+				{6, 3},
+				{6, 4},
 			},
 		},
 		{
@@ -270,9 +296,18 @@ func TestRWCA(t *testing.T) {
 			first2: 2,
 			last2:  3,
 			wca: [][]int{
-				{0, 1}, {0, 2}, {0, 3}, {0, 4},
-				{1, 1}, {1, 2}, {1, 3}, {1, 4},
-				{2, 1}, {2, 2}, {2, 3}, {2, 4},
+				{0, 1},
+				{0, 2},
+				{0, 3},
+				{0, 4},
+				{1, 1},
+				{1, 2},
+				{1, 3},
+				{1, 4},
+				{2, 1},
+				{2, 2},
+				{2, 3},
+				{2, 4},
 			},
 		},
 	}
@@ -282,14 +317,14 @@ func TestRWCA(t *testing.T) {
 			return BoundaryStrategyNumeric[int](
 				test.first1, test.last1, 1,
 				math.MinInt, math.MaxInt,
-				RA,
+				RA[int],
 			)
 		}
 		ra2 := func() []int {
 			return BoundaryStrategyNumeric[int](
 				test.first2, test.last2, 1,
 				math.MinInt, math.MaxInt,
-				RA,
+				RA[int],
 			)
 		}
 		rwca := MBA[int]([]func() []int{ra1, ra2})

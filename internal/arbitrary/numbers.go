@@ -3,6 +3,7 @@ package arbitrary
 import (
 	"math/rand"
 
+	"github.com/brandhoej/cuzz/internal/math"
 	"golang.org/x/exp/constraints"
 )
 
@@ -92,7 +93,7 @@ func SignedLessThanOrEqual[T constraints.Signed](rng *rand.Rand, n T) T {
 
 // SignedGreaterThan returns a pseudo-random T-value in [n, max).
 func SignedGreaterThan[T constraints.Signed](rng *rand.Rand, n T) T {
-	max := MaxOf[T]()
+	max := math.MaxOf[T]()
 	if n == max {
 		panic("invalid argument to SignedGreaterThan")
 	}
@@ -102,7 +103,7 @@ func SignedGreaterThan[T constraints.Signed](rng *rand.Rand, n T) T {
 
 // SignedGreaterThanOrEqual returns a pseudo-random T-value in [n, max].
 func SignedGreaterThanOrEqual[T constraints.Signed](rng *rand.Rand, n T) T {
-	max := MaxOf[T]()
+	max := math.MaxOf[T]()
 	if n == max {
 		return n
 	}
@@ -112,8 +113,8 @@ func SignedGreaterThanOrEqual[T constraints.Signed](rng *rand.Rand, n T) T {
 
 // SignedGreaterThanOrEqual returns a pseudo-random T-value in [min, max].
 func SignedInRange[T constraints.Signed](rng *rand.Rand, min, max T) T {
-	diff := safeUnsignedDifference[T, uint64](min, max)
-	return safeUnsignedAddition[T, uint64](
+	diff := math.SafeUnsignedDifference[T, uint64](min, max)
+	return math.SafeUnsignedAddition[T, uint64](
 		min, UnsignedLessThanOrEqual[uint64](rng, diff),
 	)
 }
@@ -130,17 +131,17 @@ func FloatLessThanOrEqual[T constraints.Float](rng *rand.Rand, n T) T {
 
 // FloatGreaterThan returns a pseudo-random T-value in [n, max).
 func FloatGreaterThan[T constraints.Float](rng *rand.Rand, n T) T {
-	return lerp[T](n, MaxOf[T](), FloatLessThan[T](rng, 1.0))
+	return math.Lerp[T](n, math.MaxOf[T](), FloatLessThan[T](rng, 1.0))
 }
 
 // FloatGreaterThanOrEqual returns a pseudo-random T-value in [n, max].
 func FloatGreaterThanOrEqual[T constraints.Float](rng *rand.Rand, n T) T {
-	return lerp[T](n, MaxOf[T](), FloatLessThanOrEqual[T](rng, 1.0))
+	return math.Lerp[T](n, math.MaxOf[T](), FloatLessThanOrEqual[T](rng, 1.0))
 }
 
 // FloatInRange returns a pseudo-random T-value in [min, max].
 func FloatInRange[T constraints.Float](rng *rand.Rand, min, max T) T {
-	return lerp[T](min, max, FloatLessThanOrEqual[T](rng, 1))
+	return math.Lerp[T](min, max, FloatLessThanOrEqual[T](rng, 1))
 }
 
 // LessThan returns a pseudo-random T-value in [0, n).

@@ -1,4 +1,4 @@
-package arbitrary
+package math
 
 import (
 	"math"

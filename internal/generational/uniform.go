@@ -4,7 +4,7 @@ import (
 	"context"
 	"math/rand"
 
-	"github.com/brandhoej/pgen/internal/arbitrary"
+	"github.com/brandhoej/cuzz/internal/arbitrary"
 	"golang.org/x/exp/constraints"
 )
 

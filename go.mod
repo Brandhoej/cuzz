@@ -1,4 +1,4 @@
-module github.com/brandhoej/pgen
+module github.com/brandhoej/cuzz
 
 go 1.21.2
 

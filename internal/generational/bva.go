@@ -1,7 +1,8 @@
 package generational
 
 import (
-	"github.com/brandhoej/pgen/internal/arbitrary"
+	"github.com/brandhoej/cuzz/internal/arrangement"
+	"github.com/brandhoej/cuzz/internal/math"
 	"golang.org/x/exp/constraints"
 )
 
@@ -14,17 +15,6 @@ type BoundaryStrategy[T any] func(
 	preceed func(domain T) (T, bool),
 	order func(lhs, rhs T) int,
 ) []T
-
-func OrderOf[T constraints.Ordered]() func(lhs, rhs T) int {
-	return func(lhs, rhs T) int {
-		if lhs < rhs {
-			return -1
-		} else if lhs > rhs {
-			return 1
-		}
-		return 0
-	}
-}
 
 func BoundaryStrategyNumericInterval[T constraints.Integer | constraints.Float](
 	interval Interval[T],
@@ -46,8 +36,8 @@ func BoundaryStrategyNumericInterval[T constraints.Integer | constraints.Float](
 	}
 
 	return BoundaryStrategyNumeric[T](
-		first, last, step, 
-		arbitrary.MinOf[T](), arbitrary.MaxOf[T](),
+		first, last, step,
+		math.MinOf[T](), math.MaxOf[T](),
 		strategy,
 	)
 }
@@ -58,10 +48,10 @@ func BoundaryStrategyNumeric[T constraints.Integer | constraints.Float](
 	strategy BoundaryStrategy[T],
 ) []T {
 	return strategy(
-		first, last, (first + last) / 2,
-		func(domain T) (T, bool) { return domain + step, domain <= max - step },
-		func(domain T) (T, bool) { return domain - step, domain >= min + step },
-		OrderOf[T](),
+		first, last, (first+last)/2,
+		func(domain T) (T, bool) { return domain + step, domain <= max-step },
+		func(domain T) (T, bool) { return domain - step, domain >= min+step },
+		math.OrderOf[T](),
 	)
 }
 
@@ -163,40 +153,17 @@ func RA[D any](
 //
 // Robust Worst-Case Analysis (RWCA) calculates the RA and takes the cartesian product to capture the dimensional extremes.
 //
-// RA includes clean and dirty values and therefore tests both valid and invlid values.
+// RA includes clean and dirty values and therefore tests both valid and invalid values.
 // However, like BVA it assumes that the input dimensions are not correlated by only considering one variable at a time.
 // This is fized, the same way as WCA, by including the cartesian product.
 //
 // Example (single dimension inputs):
 //
 //	panic("Not implemented")
-func MBA[D any](boundaries [](func() []D)) [][]D {
-	var values [][]D = make([][]D, 0, len(boundaries))
-	for idx := range boundaries {
-		values = append(values, boundaries[idx]())
+func MBA[D any](strategies [](func() []D)) [][]D {
+	var values [][]D = make([][]D, 0, len(strategies))
+	for idx := range strategies {
+		values = append(values, strategies[idx]())
 	}
-	return cartesian(values)
-}
-
-func cartesian[T any](values [][]T) [][]T {
-	if len(values) == 0 {
-		return [][]T{}
-	}
-
-	var helper func(current []T, depth int)
-	result := [][]T{}
-
-	helper = func(current []T, depth int) {
-		if depth == len(values) {
-			result = append(result, append([]T{}, current...))
-			return
-		}
-
-		for _, value := range values[depth] {
-			helper(append(current, value), depth+1)
-		}
-	}
-
-	helper([]T{}, 0)
-	return result
+	return arrangement.Cartesian(values)
 }
